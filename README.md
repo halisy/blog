@@ -23,16 +23,29 @@ entries are still just one markdown file each — the field builds itself from t
 
 ---
 
-## ✍️ Adding a new entry (the everyday thing)
+## ✍️ Adding a new entry — the easy way (no terminal)
 
-1. Open the `_posts` folder and **copy** `_TEMPLATE.md`.
-2. **Rename** the copy to `YYYY-MM-DD-a-few-words.md` — e.g. `2026-07-20-a-good-swim.md`.
-   The date at the front is what orders your blog and picks the mood color.
-3. Put your photos in the `assets/images/` folder.
-4. Fill in the top section (title, date, cover photo) and write a few lines.
-5. Save → commit → push. Done. The newest entry becomes the homepage automatically.
+Two double-click helpers live in this folder:
 
-That's the whole workflow. One file per entry, no tools required.
+1. Double-click **`New Post.command`**. Type a title. It creates the entry for you
+   (with today's date), then opens a text window to write in **and** your photos
+   folder to drop pictures into.
+2. Write a few lines. Drag your photos into the folder that opened, and type each
+   photo's file name into the `![](/assets/images/...)` lines. The first photo also
+   becomes the little preview tile out in the field.
+3. Save the text window. Double-click **`Publish.command`**. Done — your site
+   updates in about a minute.
+
+> First time you double-click one, macOS may ask "are you sure?" — click **Open**.
+> If it opens in a text editor instead of running, right-click it → **Open With →
+> Terminal**.
+
+### The manual way (if you prefer)
+
+1. Copy `_posts/_TEMPLATE.md` and rename it `YYYY-MM-DD-a-few-words.md`.
+2. Put photos in `assets/images/` and list them in the entry.
+3. Fill in the title/date, write a few lines, then commit & push (or edit right on
+   github.com). The newest entry becomes the homepage automatically.
 
 ---
 

@@ -19,17 +19,14 @@
 layout: post
 title: "Give it a short, honest title"
 date: 2026-07-20
-place: "optional — where you were"
-cover: /assets/images/your-photo.jpg
-cover_caption: "optional — a line under the main photo"
-tags: [optional, keywords]
+place: "Boston"        # optional — where you were
 ---
 
 Write your short text here. A few sentences is plenty.
 
 Add as many photos as you like — just list them, one per line. They'll be laid
 out as a clean gallery (a big lead photo, then a tidy grid) when someone opens
-the entry:
+the entry, and the first one also becomes the little preview tile out in the field:
 
 ![a caption for this one](/assets/images/photo-1.jpg)
 ![another one](/assets/images/photo-2.jpg)

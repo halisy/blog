@@ -77,8 +77,9 @@
       el.style.transform = "translate(-50%,-50%) translate(" + home.x.toFixed(1) + "px," + home.y.toFixed(1) + "px)";
       el.setAttribute("aria-label", d.title + " — " + d.dateLabel);
 
-      var cover = d.cover
-        ? '<img src="' + d.cover + '" alt="" loading="lazy" draggable="false">'
+      var thumb = withBase(d.cover || firstImg(d.html));
+      var cover = thumb
+        ? '<img src="' + thumb + '" alt="" loading="lazy" draggable="false">'
         : '<span class="blank"></span>';
       el.innerHTML =
         '<span class="moment-frame">' + cover + '</span>' +
@@ -296,6 +297,14 @@
     if (!src) return src;
     if (BASE && src.charAt(0) === "/" && src.indexOf(BASE + "/") !== 0) return BASE + src;
     return src;
+  }
+  // The first image inside a post — used as the field thumbnail when a post sets
+  // no explicit cover, so simply listing your photos is all you ever need to do.
+  function firstImg(html) {
+    if (!html) return "";
+    var t = document.createElement("div"); t.innerHTML = html;
+    var im = t.querySelector("img");
+    return im ? im.getAttribute("src") : "";
   }
   function escapeHTML(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function showEmpty(msg) {
