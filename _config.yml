@@ -1,0 +1,26 @@
+# ─────────────────────────────────────────────────────────────
+#  Your blog's settings.  Edit the values in quotes below.
+# ─────────────────────────────────────────────────────────────
+
+title: "Halis"                       # shown in the header
+tagline: "an evolving field notebook"  # small line under your name
+location: "Boston"                   # ← your current spot. Change this whenever you move.
+author: "Halis"
+
+# This site lives in a repo named "blog", so it's served from /blog.
+# If you ever move it to a repo named  halisy.github.io , set baseurl back to "".
+baseurl: "/blog"
+url: "https://halisy.github.io"
+
+# ── Don't edit below this line ───────────────────────────────
+permalink: /entry/:title/
+markdown: kramdown
+
+sass:
+  style: compressed
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor

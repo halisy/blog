@@ -1,0 +1,23 @@
+---
+# This file is generated automatically from your _posts folder.
+# You never need to edit it. It just feeds the field on the home page.
+layout: null
+---
+{
+  "baseurl": {{ site.baseurl | jsonify }},
+  "entries": [
+    {% for post in site.posts %}
+    {
+      "title": {{ post.title | jsonify }},
+      "dateISO": {{ post.date | date_to_xmlschema | jsonify }},
+      "dateLabel": {{ post.date | date: "%B %-d, %Y" | jsonify }},
+      "place": {{ post.place | default: "" | jsonify }},
+      "cover": {% if post.cover %}{{ post.cover | relative_url | jsonify }}{% else %}""{% endif %},
+      "cover_caption": {{ post.cover_caption | default: "" | jsonify }},
+      "excerpt": {{ post.excerpt | strip_html | strip_newlines | jsonify }},
+      "html": {{ post.content | jsonify }},
+      "url": {{ post.url | relative_url | jsonify }}
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}

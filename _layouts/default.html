@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title %}{{ page.title }} · {{ site.title }}{% else %}{{ site.title }} — {{ site.tagline }}{% endif %}</title>
+  <meta name="description" content="{{ site.title }} — {{ site.tagline }}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="site-head">
+    <a class="brand" href="{{ '/' | relative_url }}">
+      <span class="brand-mark"></span>
+      <span class="brand-name">{{ site.title }}</span>
+      {% if site.location %}<span class="brand-loc">{{ site.location }}</span>{% endif %}
+    </a>
+    <nav class="site-nav">
+      <a href="{{ '/' | relative_url }}">← back to the field</a>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    {{ content }}
+  </main>
+
+  <footer class="site-foot">
+    <span>{{ site.title }} · <span id="year"></span></span>
+    <span class="foot-note">written in the open · always in progress</span>
+  </footer>
+
+  <script src="{{ '/assets/js/mood.js' | relative_url }}"></script>
+</body>
+</html>

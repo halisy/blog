@@ -1,0 +1,67 @@
+---
+# The field — the home page. Fully custom; it reads your entries from data.json.
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>{{ site.title }} — {{ site.tagline }}</title>
+  <meta name="description" content="{{ site.title }} — {{ site.tagline }}. A field to wander.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/field.css' | relative_url }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌫️</text></svg>">
+</head>
+<body>
+  <!-- ambient layers -->
+  <div class="sky" aria-hidden="true"></div>
+  <div class="fog" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- the explorable field (built by field.js) -->
+  <main id="field" class="field" aria-label="A field of moments to explore. Drag to wander.">
+    <div id="world" class="world"></div>
+  </main>
+
+  <!-- quiet corner chrome -->
+  <a class="brand" href="{{ '/' | relative_url }}">
+    <span class="brand-dot" aria-hidden="true"></span>
+    <span class="brand-name">{{ site.title }}</span>
+    {% if site.location %}<span class="brand-loc">{{ site.location }}</span>{% endif %}
+  </a>
+
+  <button id="indexBtn" class="index-btn" aria-haspopup="dialog" aria-controls="indexPanel">index</button>
+
+  <div class="hint" id="hint" aria-hidden="true">drag to wander · pull a moment to the center</div>
+
+  <!-- the "meaning" layer: a single entry, fully opened -->
+  <div id="reader" class="reader" role="dialog" aria-modal="true" aria-label="Entry" hidden>
+    <button class="reader-close" id="readerClose" aria-label="Close">close ✕</button>
+    <div class="reader-inner" id="readerInner"></div>
+  </div>
+
+  <!-- accessible / no-JS index of everything -->
+  <aside id="indexPanel" class="index-panel" role="dialog" aria-modal="true" aria-label="All entries" hidden>
+    <div class="index-head">
+      <span>the whole trail</span>
+      <button class="index-close" id="indexClose" aria-label="Close index">✕</button>
+    </div>
+    <ol class="index-list">
+      {% for post in site.posts %}
+      <li>
+        <button class="index-item" data-url="{{ post.url | relative_url }}">
+          <span class="ix-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+          <span class="ix-title">{{ post.title }}</span>
+        </button>
+      </li>
+      {% endfor %}
+    </ol>
+  </aside>
+
+  <script>window.SITE = { baseurl: {{ site.baseurl | jsonify }} };</script>
+  <script src="{{ '/assets/js/field.js' | relative_url }}"></script>
+</body>
+</html>

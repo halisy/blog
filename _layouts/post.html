@@ -1,0 +1,44 @@
+---
+layout: default
+---
+<article class="entry entry--full" data-date="{{ page.date | date_to_xmlschema }}">
+  <div class="entry-meta">
+    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+    {% if page.place %}<span class="entry-place">· {{ page.place }}</span>{% endif %}
+  </div>
+
+  <h1 class="entry-title">{{ page.title }}</h1>
+
+  {% if page.cover %}
+  <figure class="entry-cover reveal">
+    <img src="{{ page.cover | relative_url }}" alt="{{ page.cover_alt | default: page.title }}" loading="lazy">
+    {% if page.cover_caption %}<figcaption>{{ page.cover_caption }}</figcaption>{% endif %}
+  </figure>
+  {% endif %}
+
+  <div class="entry-body reveal">
+    {{ content }}
+  </div>
+
+  {% if page.tags.size > 0 %}
+  <div class="entry-tags">
+    {% for tag in page.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+  </div>
+  {% endif %}
+</article>
+
+<nav class="entry-nav">
+  {% if page.previous %}
+    <a class="entry-nav__link prev" href="{{ page.previous.url | relative_url }}">
+      <span class="entry-nav__dir">← earlier</span>
+      <span class="entry-nav__ttl">{{ page.previous.title }}</span>
+    </a>
+  {% else %}<span></span>{% endif %}
+
+  {% if page.next %}
+    <a class="entry-nav__link next" href="{{ page.next.url | relative_url }}">
+      <span class="entry-nav__dir">later →</span>
+      <span class="entry-nav__ttl">{{ page.next.title }}</span>
+    </a>
+  {% else %}<span></span>{% endif %}
+</nav>
