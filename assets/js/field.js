@@ -77,7 +77,7 @@
       el.style.transform = "translate(-50%,-50%) translate(" + home.x.toFixed(1) + "px," + home.y.toFixed(1) + "px)";
       el.setAttribute("aria-label", d.title + " — " + d.dateLabel);
 
-      var thumb = withBase(d.cover || firstImg(d.html));
+      var thumb = withBase((d.photos && d.photos[0]) || d.cover || firstImg(d.html));
       var cover = thumb
         ? '<img src="' + thumb + '" alt="" loading="lazy" draggable="false">'
         : '<span class="blank"></span>';
@@ -215,13 +215,18 @@
     // floating gallery — so a handful of photos "give an impression".
     var tmp = document.createElement("div");
     tmp.innerHTML = d.html || "";
+    var inlineImgs = [].slice.call(tmp.querySelectorAll("img"));
     var pics = [];
-    if (d.cover) pics.push({ src: withBase(d.cover), cap: d.cover_caption || "" });
-    [].slice.call(tmp.querySelectorAll("img")).forEach(function (img) {
-      pics.push({ src: withBase(img.getAttribute("src")), cap: img.getAttribute("alt") || "" });
-      img.remove();
-    });
-    // drop paragraphs left empty after their image was removed
+    if (d.photos && d.photos.length) {
+      // the simple path: every photo dropped into the post's folder
+      d.photos.forEach(function (src) { pics.push({ src: withBase(src), cap: "" }); });
+    } else {
+      // fallback: images written inline in the note, keeping their captions
+      if (d.cover) pics.push({ src: withBase(d.cover), cap: d.cover_caption || "" });
+      inlineImgs.forEach(function (img) { pics.push({ src: withBase(img.getAttribute("src")), cap: img.getAttribute("alt") || "" }); });
+    }
+    // strip any inline images + emptied paragraphs out of the text
+    inlineImgs.forEach(function (img) { img.remove(); });
     [].slice.call(tmp.querySelectorAll("p")).forEach(function (p) { if (!p.textContent.trim()) p.remove(); });
     var textHTML = tmp.innerHTML;
 

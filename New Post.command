@@ -24,9 +24,14 @@ DATE=$(date +%Y-%m-%d)
 # make a filename-friendly slug from the title
 SLUG=$(printf '%s' "$TITLE" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')
 [ -z "$SLUG" ] && SLUG="entry"
-FILE="_posts/${DATE}-${SLUG}.md"
+BASENAME="${DATE}-${SLUG}"
+FILE="_posts/${BASENAME}.md"
 n=2
-while [ -e "$FILE" ]; do FILE="_posts/${DATE}-${SLUG}-${n}.md"; n=$((n + 1)); done
+while [ -e "$FILE" ]; do BASENAME="${DATE}-${SLUG}-${n}"; FILE="_posts/${BASENAME}.md"; n=$((n + 1)); done
+
+# each post gets its own photo folder — everything dropped in here appears automatically
+IMGDIR="assets/images/${BASENAME}"
+mkdir -p "$IMGDIR"
 
 cat > "$FILE" <<EOF
 ---
@@ -36,25 +41,20 @@ date: ${DATE}
 place: "Boston"
 ---
 
-Write a few lines here — whatever this moment was.
-
-Then list your photos below, one per line. Drag the pictures into the
-images folder first (it just opened), then use their file names here.
-The first photo also becomes the little preview out in the field.
-
-![](/assets/images/PHOTO-NAME.jpg)
+Write a few lines here — whatever this moment was. A sentence or two is plenty.
 EOF
 
 echo
-echo "✅  Created  $FILE"
-echo "    • A text window is opening — write your words there."
-echo "    • A Finder window is opening — drag your photos into it,"
-echo "      then type each photo's name in the ![](...) lines."
+echo "✅  Created your entry."
+echo "    • A text window is opening — write your words there, then save (Cmd+S)."
+echo "    • A Finder window is opening — just drag ALL your photos into it."
+echo "      Every photo appears automatically; the first one becomes the"
+echo "      little preview out in the field. No file names to type."
 echo
 echo "When you're done, double-click  «Publish.command»  to put it online."
 echo
 
-open assets/images/       # Finder: drop your photos here
-open -e "$FILE"           # TextEdit: write here
+open "$IMGDIR"           # Finder: drop this post's photos here
+open -e "$FILE"          # TextEdit: write here
 
 read -r -p "Press Enter to close this window…" _

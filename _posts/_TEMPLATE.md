@@ -1,15 +1,20 @@
 <!--
   ┌─────────────────────────────────────────────────────────────┐
-  │  HOW TO ADD A NEW ENTRY  (about 30 seconds)                  │
+  │  HOW TO ADD A NEW ENTRY                                      │
   │                                                             │
+  │  The easy way: just double-click «New Post.command» in the  │
+  │  main folder. It does everything below for you.             │
+  │                                                             │
+  │  By hand:                                                   │
   │  1. COPY this file.                                          │
   │  2. RENAME the copy to:   YYYY-MM-DD-a-few-words.md          │
   │        e.g.  2026-07-20-a-good-swim.md                       │
-  │        (the date at the front is what orders your blog)      │
-  │  3. Put your photo(s) in  assets/images/                     │
-  │  4. Fill in the bits between the --- lines below, and write. │
-  │  5. Save, commit, push. That's it — the newest entry         │
-  │     becomes the landing page automatically.                  │
+  │  3. Make a folder with the SAME name (minus ".md") inside   │
+  │     assets/images/  →  assets/images/2026-07-20-a-good-swim/ │
+  │     and drop your photos into it.                            │
+  │  4. Write your text below. (No need to mention the photos —  │
+  │     they appear automatically.)                             │
+  │  5. Save, then double-click «Publish.command».              │
   │                                                             │
   │  This _TEMPLATE.md file never gets published (the leading    │
   │  underscore hides it), so just leave it here as a reference. │
@@ -24,14 +29,8 @@ place: "Boston"        # optional — where you were
 
 Write your short text here. A few sentences is plenty.
 
-Add as many photos as you like — just list them, one per line. They'll be laid
-out as a clean gallery (a big lead photo, then a tidy grid) when someone opens
-the entry, and the first one also becomes the little preview tile out in the field:
-
-![a caption for this one](/assets/images/photo-1.jpg)
-![another one](/assets/images/photo-2.jpg)
-![and another](/assets/images/photo-3.jpg)
-
-> Pull out a line you want to hang in the air like this.
+You don't list your photos here — just drop them into this entry's folder in
+assets/images/ (see the note at the top). Every photo appears automatically as a
+clean gallery, and the first one becomes the little preview tile out in the field.
 
 Keep it small. Keep it true. Post it.

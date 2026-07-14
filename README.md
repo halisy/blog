@@ -43,9 +43,11 @@ Two double-click helpers live in this folder:
 ### The manual way (if you prefer)
 
 1. Copy `_posts/_TEMPLATE.md` and rename it `YYYY-MM-DD-a-few-words.md`.
-2. Put photos in `assets/images/` and list them in the entry.
-3. Fill in the title/date, write a few lines, then commit & push (or edit right on
-   github.com). The newest entry becomes the homepage automatically.
+2. Make a folder with the same name (minus `.md`) inside `assets/images/`
+   (e.g. `assets/images/2026-07-20-a-good-swim/`) and drop your photos in it —
+   they appear automatically; the first one becomes the field preview.
+3. Write a few lines, then commit & push (or edit right on github.com).
+   The newest entry becomes the homepage automatically.
 
 ---
 
