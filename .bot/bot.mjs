@@ -3,7 +3,7 @@
 // builds up a draft (text + photos, in the order you send them), and on
 // /publish writes a real post into the repo. No dependencies — plain Node 20.
 
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir, rm } from "node:fs/promises";
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const ALLOWED = (process.env.TELEGRAM_ALLOWED_USER_ID || "").trim();
@@ -86,7 +86,7 @@ for (const u of updates) {
     const cmd = text.split(/\s+/)[0].toLowerCase().replace(/@.*$/, "");
     const arg = text.slice(cmd.length).trim();
     if (cmd === "/start" || cmd === "/help") {
-      await say(chatId, "🌱 Send me a photo-journal entry.\n\n• Send your text and photos in the order you want them on the page.\n• The first line you send becomes the title.\n• Send /publish when you're done.\n\nHandy: /preview, /undo, /cancel, /place <where>, /title <title>.");
+      await say(chatId, "🌱 Send me a photo-journal entry.\n\n• Send your text and photos in the order you want them on the page.\n• The first line you send becomes the title.\n• Send /publish when you're done.\n\nManage posts:  /list  ·  /delete <number>\nWhile drafting:  /preview  ·  /undo  ·  /cancel  ·  /place <where>  ·  /title <title>");
     } else if (cmd === "/publish" || cmd === "/post") {
       publishReq = true;
     } else if (cmd === "/cancel" || cmd === "/discard") {
@@ -103,6 +103,14 @@ for (const u of updates) {
       const d = state.draft;
       if (d && d.items.length) { const it = d.items.pop(); await say(chatId, `Removed last ${it.type}. ${d.items.length} left.`); }
       else await say(chatId, "Nothing to undo.");
+    } else if (cmd === "/list" || cmd === "/posts") {
+      const posts = await listPosts();
+      if (!posts.length) await say(chatId, "No posts yet.");
+      else await say(chatId, "Your posts (newest first):\n" +
+        posts.slice(0, 15).map((p, i) => `${i + 1}. ${p.title}  ·  ${p.base.slice(0, 10)}`).join("\n") +
+        "\n\nRemove one with:  /delete 1");
+    } else if (cmd === "/delete" || cmd === "/remove") {
+      await deletePost(chatId, arg);
     } else {
       await say(chatId, "Unknown command. Send text/photos, then /publish.");
     }
@@ -184,4 +192,43 @@ async function publish() {
   state.draft = null;
   await say(ackChat, `✨ Published "${title}" (${n} photo${n === 1 ? "" : "s"})!\nLive in a few minutes:\n${SITE_URL}`);
   console.log(`Published ${base} with ${n} photo(s).`);
+}
+
+async function listPosts() {
+  let files;
+  try { files = await readdir("_posts"); } catch { return []; }
+  files = files.filter(f => f.endsWith(".md") && !f.startsWith("_"));
+  files.sort().reverse(); // newest first (date-prefixed filenames)
+  const out = [];
+  for (const f of files) {
+    let title = f.replace(/\.md$/, "");
+    try {
+      const m = (await readFile(`_posts/${f}`, "utf8")).match(/^title:\s*(.+)$/m);
+      if (m) title = m[1].trim().replace(/^"|"$/g, "");
+    } catch {}
+    out.push({ file: f, base: f.replace(/\.md$/, ""), title });
+  }
+  return out;
+}
+
+async function deletePost(chatId, arg) {
+  const posts = await listPosts();
+  if (!posts.length) { await say(chatId, "No posts to remove."); return; }
+  if (!arg) {
+    await say(chatId, "Which one? Send /delete <number>:\n" +
+      posts.slice(0, 15).map((p, i) => `${i + 1}. ${p.title}`).join("\n"));
+    return;
+  }
+  let target = null;
+  if (/^\d+$/.test(arg)) target = posts[parseInt(arg, 10) - 1] || null;
+  else { const a = arg.toLowerCase(); target = posts.find(p => p.base.toLowerCase().includes(a) || p.title.toLowerCase() === a) || null; }
+  if (!target) { await say(chatId, `Couldn't find "${arg}". Send /list to see the numbers.`); return; }
+  try {
+    await rm(`_posts/${target.file}`, { force: true });
+    await rm(`assets/images/${target.base}`, { recursive: true, force: true });
+    await say(chatId, `🗑 Removed "${target.title}". It disappears from the site in a few minutes.\n(Still recoverable from the repo's history if you change your mind.)`);
+    console.log("Deleted post", target.base);
+  } catch (e) {
+    await say(chatId, "Sorry — couldn't remove it: " + e.message);
+  }
 }

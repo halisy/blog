@@ -45,7 +45,10 @@ Open your bot in Telegram and:
 - Send **`/publish`**. In a few minutes your post is live at
   https://halisy.github.io/blog/
 
-Handy commands: `/preview` (see the draft), `/undo` (remove the last thing),
+**Managing posts:** `/list` shows your posts (numbered, newest first), and
+`/delete <number>` removes one (recoverable from git history).
+
+Handy while drafting: `/preview` (see the draft), `/undo` (remove the last thing),
 `/cancel` (start over), `/place <where>` (override location), `/title <title>`.
 
 ---
