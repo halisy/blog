@@ -211,47 +211,42 @@
     var d = allEntries[i]; if (!d) return;
     var older = allEntries[i + 1], newer = allEntries[i - 1];
 
-    // Pull every picture out of the note and show them together as one organic,
-    // floating gallery — so a handful of photos "give an impression".
-    var tmp = document.createElement("div");
-    tmp.innerHTML = d.html || "";
-    var inlineImgs = [].slice.call(tmp.querySelectorAll("img"));
-    var pics = [];
-    if (d.photos && d.photos.length) {
-      // the simple path: every photo dropped into the post's folder
-      d.photos.forEach(function (src) { pics.push({ src: withBase(src), cap: "" }); });
-    } else {
-      // fallback: images written inline in the note, keeping their captions
-      if (d.cover) pics.push({ src: withBase(d.cover), cap: d.cover_caption || "" });
-      inlineImgs.forEach(function (img) { pics.push({ src: withBase(img.getAttribute("src")), cap: img.getAttribute("alt") || "" }); });
-    }
-    // strip any inline images + emptied paragraphs out of the text
-    inlineImgs.forEach(function (img) { img.remove(); });
-    [].slice.call(tmp.querySelectorAll("p")).forEach(function (p) { if (!p.textContent.trim()) p.remove(); });
-    var textHTML = tmp.innerHTML;
+    // Text and photos interleave: wherever the writer put [photo] on its own
+    // line, the next folder photo appears there. Photos not placed inline are
+    // gathered together at the end.
+    var photos = (d.photos || []).slice();
+    var used = 0;
+    var figFull = function (src) {
+      return '<figure class="ph full"><img src="' + withBase(src) + '" loading="lazy" draggable="false"></figure>';
+    };
+    var html = d.html || "";
+    // give any inline markdown images the correct base path
+    html = html.replace(/(<img[^>]+src=")(\/[^"]*)(")/gi, function (m, a, src, b) { return a + withBase(src) + b; });
+    // a [photo] on its own line becomes the next photo, in order
+    html = html.replace(/<p>\s*\[photo\]\s*<\/p>/gi, function () { var s = photos[used++]; return s ? figFull(s) : ""; });
+    // tolerate a stray inline [photo] too
+    html = html.replace(/\[photo\]/gi, function () { var s = photos[used++]; return s ? figFull(s) : ""; });
 
+    var rest = photos.slice(used);
     var gallery = "";
-    if (pics.length) {
-      var fig = function (p, cls) {
-        return '<figure class="ph' + (cls ? " " + cls : "") + '">' +
-          '<img src="' + p.src + '" alt="' + escapeHTML(p.cap) + '" loading="lazy" draggable="false">' +
-          (p.cap ? '<figcaption>' + escapeHTML(p.cap) + '</figcaption>' : '') +
-          '</figure>';
+    if (rest.length) {
+      var fig = function (src, cls) {
+        return '<figure class="ph' + (cls ? " " + cls : "") + '"><img src="' + withBase(src) + '" loading="lazy" draggable="false"></figure>';
       };
-      if (pics.length <= 2) {
-        // one or two photos: show them large, full width, stacked
-        gallery = '<div class="reader-gallery">' + pics.map(function (p) { return fig(p, "full"); }).join("") + '</div>';
+      if (used === 0) {
+        // nothing placed inline — the classic lead + grid gallery
+        if (rest.length <= 2) gallery = '<div class="reader-gallery">' + rest.map(function (s) { return fig(s, "full"); }).join("") + '</div>';
+        else gallery = '<div class="reader-gallery">' + fig(rest[0], "full lead") + '<div class="ph-grid">' + rest.slice(1).map(function (s) { return fig(s, ""); }).join("") + '</div></div>';
       } else {
-        // three or more: a full-width lead, then the rest in a tidy grid
-        gallery = '<div class="reader-gallery">' + fig(pics[0], "full lead") +
-          '<div class="ph-grid">' + pics.slice(1).map(function (p) { return fig(p, ""); }).join("") + '</div></div>';
+        // some were placed inline — the leftovers as a tidy grid
+        gallery = '<div class="reader-gallery">' + (rest.length === 1 ? fig(rest[0], "full") : '<div class="ph-grid">' + rest.map(function (s) { return fig(s, ""); }).join("") + '</div>') + '</div>';
       }
     }
 
     readerInner.innerHTML =
       '<div class="reader-date">' + escapeHTML(d.dateLabel) + (d.place ? ' · <span class="reader-place">' + escapeHTML(d.place) + '</span>' : '') + '</div>' +
       '<h1 class="reader-title">' + escapeHTML(d.title) + '</h1>' +
-      (textHTML.trim() ? '<div class="reader-body">' + textHTML + '</div>' : '') +
+      (html.trim() ? '<div class="reader-body">' + html + '</div>' : '') +
       gallery +
       '<div class="reader-nav">' +
         (older ? '<button data-go="' + (i + 1) + '"><span class="rn-dir">← earlier</span>' + escapeHTML(older.title) + '</button>' : '<span></span>') +

@@ -187,21 +187,21 @@ body {
 .reader-nav .rn-dir { display: block; font-family: var(--sans); font-size: .72rem; letter-spacing: .1em; color: hsl(var(--hue) 45% 65%); }
 .reader-nav .next { text-align: right; margin-left: auto; }
 
-/* the gallery — calm and editorial: a full-width lead, then a tidy grid. no motion. */
-.reader-gallery { margin-top: 2.4rem; }
-.reader-gallery .ph { margin: 0 0 1.15rem; padding: 0; }
-.reader-gallery .ph.full { margin-bottom: 1.4rem; }
-.reader-gallery .ph img {
-  width: 100%; display: block; border-radius: 12px;
+/* photos — calm and editorial, whether placed between text or gathered in a gallery */
+.reader-gallery { margin-top: 1.6rem; }
+.reader .ph { margin: 1.5rem 0; padding: 0; }
+.reader .ph.full { margin: 1.7rem 0; }
+.reader .ph img {
+  width: 100%; display: block; margin: 0; border-radius: 12px;
   box-shadow: 0 26px 54px -34px #000;
   transition: transform .6s cubic-bezier(.2,.7,.3,1), box-shadow .35s ease;
 }
-.reader-gallery figcaption { margin-top: .6rem; text-align: center; font-style: italic; font-size: .82rem; color: var(--ink-2); }
+.reader figcaption { margin-top: .6rem; text-align: center; font-style: italic; font-size: .82rem; color: var(--ink-2); }
 .ph-grid { columns: 2; column-gap: 1.1rem; }
-.ph-grid .ph { break-inside: avoid; }
+.ph-grid .ph { break-inside: avoid; margin: 0 0 1.1rem; }
 /* the only motion is a quiet lift on hover — nothing moves at rest */
 @media (hover: hover) {
-  .reader-gallery .ph img:hover { transform: scale(1.015); box-shadow: 0 34px 62px -34px #000; }
+  .reader .ph img:hover { transform: scale(1.015); box-shadow: 0 34px 62px -34px #000; }
 }
 @media (max-width: 520px) { .ph-grid { columns: 1; } }
 

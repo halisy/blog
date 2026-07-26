@@ -25,16 +25,22 @@ entries are still just one markdown file each — the field builds itself from t
 
 ## ✍️ Adding a new entry — the easy way (no terminal)
 
-Two double-click helpers live in this folder:
+Double-click **`New Post.command`** and follow the prompts. It:
 
-1. Double-click **`New Post.command`**. Type a title. It creates the entry for you
-   (with today's date), then opens a text window to write in **and** your photos
-   folder to drop pictures into.
-2. Write a few lines. Drag your photos into the folder that opened, and type each
-   photo's file name into the `![](/assets/images/...)` lines. The first photo also
-   becomes the little preview tile out in the field.
-3. Save the text window. Double-click **`Publish.command`**. Done — your site
-   updates in about a minute.
+1. asks for a **title**, then makes the entry (with today's date) and its own
+   photo folder;
+2. opens a **text window** to write in, and a **Finder window** to drag your
+   photos into (any size — big ones get shrunk automatically);
+3. when you come back and press Enter, **optimizes your photos and publishes**
+   for you. Your site updates in about a minute.
+
+**Writing between photos:** put `[photo]` on its own line wherever you want a
+picture — each one becomes the next photo from your folder, in order. Photos you
+don't place this way appear together in a gallery at the end. (No `[photo]` lines
+at all → every photo shows as one gallery.) The first photo also becomes the
+little preview tile out in the field.
+
+Use **`Publish.command`** later if you edit something and want to re-publish.
 
 > First time you double-click one, macOS may ask "are you sure?" — click **Open**.
 > If it opens in a text editor instead of running, right-click it → **Open With →
@@ -44,10 +50,9 @@ Two double-click helpers live in this folder:
 
 1. Copy `_posts/_TEMPLATE.md` and rename it `YYYY-MM-DD-a-few-words.md`.
 2. Make a folder with the same name (minus `.md`) inside `assets/images/`
-   (e.g. `assets/images/2026-07-20-a-good-swim/`) and drop your photos in it —
-   they appear automatically; the first one becomes the field preview.
-3. Write a few lines, then commit & push (or edit right on github.com).
-   The newest entry becomes the homepage automatically.
+   (e.g. `assets/images/2026-07-20-a-good-swim/`) and drop your photos in it.
+3. Write a few lines — use `[photo]` on its own line to place a photo between
+   your words. Then commit & push (or edit right on github.com).
 
 ---
 
