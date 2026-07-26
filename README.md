@@ -23,7 +23,16 @@ entries are still just one markdown file each — the field builds itself from t
 
 ---
 
-## ✍️ Adding a new entry — the easy way (no terminal)
+## 📱 Adding a new entry — from Telegram (easiest)
+
+Message your bot: send your text and photos **in the order you want them on the
+page**, then send **`/publish`**. A few minutes later it's live — text and photos
+laid out exactly as you sent them. The first line becomes the title.
+
+One-time setup (~10 min) is in **[.bot/SETUP.md](.bot/SETUP.md)**. It's locked to
+your Telegram account, runs free on GitHub Actions, and needs no server.
+
+## ✍️ Adding a new entry — from your Mac (no terminal)
 
 Double-click **`New Post.command`** and follow the prompts. It:
 

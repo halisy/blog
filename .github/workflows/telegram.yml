@@ -1,0 +1,43 @@
+name: Telegram → post
+
+# Checks your bot for new messages every 5 minutes, and lets you run it on demand.
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# never let two runs overlap (they share the offset in .bot/state.json)
+concurrency:
+  group: telegram-bot
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Read messages and build any new posts
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ALLOWED_USER_ID: ${{ secrets.TELEGRAM_ALLOWED_USER_ID }}
+        run: node .bot/bot.mjs
+
+      - name: Commit anything new
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "field-bot"
+            git config user.email "field-bot@users.noreply.github.com"
+            git add -A
+            git commit -m "Entry via Telegram"
+            git push
+          else
+            echo "Nothing to commit."
+          fi
