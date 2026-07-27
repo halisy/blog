@@ -2,8 +2,16 @@
 // Stores emoji counts per photo in a KV namespace. No accounts, no tracking —
 // just tallies. Deploy with wrangler (see README.md in this folder).
 
-const ALLOWED_EMOJI = ["❤️", "🔥", "✨", "😍", "🙌"];
 const ALLOW_ORIGIN = "https://halisy.github.io";
+
+// Accept any genuine emoji (incl. ZWJ sequences), but reject plain text / junk.
+function isEmoji(s) {
+  if (typeof s !== "string") return false;
+  const cps = [...s];
+  if (cps.length === 0 || cps.length > 12) return false;
+  if (/[A-Za-z<>{}"\\]/.test(s)) return false;
+  return /\p{Extended_Pictographic}/u.test(s);
+}
 
 function withCors(resp) {
   resp.headers.set("Access-Control-Allow-Origin", ALLOW_ORIGIN);
@@ -43,7 +51,7 @@ export default {
       const key = body && body.key;
       const emoji = body && body.emoji;
       if (!key || typeof key !== "string" || key.length > 300) return json({ error: "bad key" }, 400);
-      if (!ALLOWED_EMOJI.includes(emoji)) return json({ error: "bad emoji" }, 400);
+      if (!isEmoji(emoji)) return json({ error: "bad emoji" }, 400);
       const delta = body.delta === -1 ? -1 : 1;
       const id = "r:" + key;
       const counts = JSON.parse((await env.REACTIONS.get(id)) || "{}");
