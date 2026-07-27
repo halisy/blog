@@ -1,0 +1,10 @@
+name = "field-reactions"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+# The KV namespace id is filled in during setup:
+#   npx wrangler kv namespace create REACTIONS
+# then paste the printed id below.
+[[kv_namespaces]]
+binding = "REACTIONS"
+id = "PASTE_KV_ID_HERE"

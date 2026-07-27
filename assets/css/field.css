@@ -205,6 +205,34 @@ body {
 }
 @media (max-width: 520px) { .ph-grid { columns: 1; } }
 
+/* photo reactions */
+.reactions { display: flex; flex-wrap: wrap; gap: .45rem; margin: .7rem 0 .2rem; }
+.react {
+  display: inline-flex; align-items: center; gap: .3rem;
+  background: hsl(var(--hue) 20% 100% / .05);
+  border: 1px solid hsl(var(--hue) 30% 80% / .16);
+  color: var(--ink); border-radius: 999px; padding: .3rem .62rem;
+  cursor: pointer; line-height: 1; font-family: var(--sans);
+  transition: transform .15s ease, background .2s ease, border-color .2s ease;
+}
+.react:hover { background: hsl(var(--hue) 30% 80% / .12); }
+.react:active { transform: scale(.9); }
+.react.on { background: hsl(var(--hue) 48% 55% / .22); border-color: hsl(var(--hue) 55% 70% / .5); }
+.react .rx-e { font-size: 1.02rem; }
+.react .rx-n { font-size: .78rem; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.react.has .rx-n { color: var(--ink); }
+.rx-float {
+  position: fixed; z-index: 40; transform: translate(-50%, 0);
+  pointer-events: none; font-size: 1.4rem;
+  animation: rxrise 1.1s ease-out forwards;
+}
+@keyframes rxrise {
+  0%   { opacity: 0; transform: translate(-50%, 0) scale(.6); }
+  15%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -90px) scale(1.3); }
+}
+@media (prefers-reduced-motion: reduce) { .rx-float { display: none; } }
+
 /* ---- the index panel ---- */
 .index-panel {
   position: fixed; inset: 0; z-index: 20;

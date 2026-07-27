@@ -61,7 +61,11 @@
     </ol>
   </aside>
 
-  <script>window.SITE = { baseurl: {{ site.baseurl | jsonify }} };</script>
+  <script>
+    window.SITE = { baseurl: {{ site.baseurl | jsonify }} };
+    window.REACTIONS = { api: {{ site.reactions_api | default: "" | jsonify }} };
+  </script>
+  <script src="{{ '/assets/js/reactions.js' | relative_url }}"></script>
   <script src="{{ '/assets/js/field.js' | relative_url }}"></script>
 </body>
 </html>

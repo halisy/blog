@@ -255,6 +255,7 @@
     readerInner.querySelectorAll("[data-go]").forEach(function (b) {
       b.addEventListener("click", function () { openReader(parseInt(b.getAttribute("data-go"), 10)); reader.scrollTop = 0; });
     });
+    if (window.initReactions) window.initReactions(readerInner);
     reader.hidden = false;
     requestAnimationFrame(function () { reader.classList.add("open"); });
     document.body.style.overflow = "hidden";

@@ -7,6 +7,9 @@ tagline: "an evolving field notebook"  # small line under your name
 location: "Boston"                   # ← your current spot. Change this whenever you move.
 author: "Halis"
 
+# Photo reactions backend (Cloudflare Worker). Filled in after deploy; leave "" to keep reactions off.
+reactions_api: ""
+
 # This site lives in a repo named "blog", so it's served from /blog.
 # If you ever move it to a repo named  halisy.github.io , set baseurl back to "".
 baseurl: "/blog"
