@@ -199,6 +199,10 @@ body {
 .reader figcaption { margin-top: .6rem; text-align: center; font-style: italic; font-size: .82rem; color: var(--ink-2); }
 .ph-grid { columns: 2; column-gap: 1.1rem; }
 .ph-grid .ph { break-inside: avoid; margin: 0 0 1.1rem; }
+/* side-by-side photos placed between text — clean equal squares */
+.ph-row { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin: 1.6rem 0; }
+.ph-row .ph { margin: 0; }
+.ph-row .ph img { aspect-ratio: 1 / 1; object-fit: cover; }
 /* the only motion is a quiet lift on hover — nothing moves at rest */
 @media (hover: hover) {
   .reader .ph img:hover { transform: scale(1.015); box-shadow: 0 34px 62px -34px #000; }

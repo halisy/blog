@@ -252,6 +252,8 @@
         (older ? '<button data-go="' + (i + 1) + '"><span class="rn-dir">← earlier</span>' + escapeHTML(older.title) + '</button>' : '<span></span>') +
         (newer ? '<button class="next" data-go="' + (i - 1) + '"><span class="rn-dir">later →</span>' + escapeHTML(newer.title) + '</button>' : '<span></span>') +
       '</div>';
+    var _body = readerInner.querySelector(".reader-body");
+    if (_body) groupPhotoRows(_body);
     readerInner.querySelectorAll("[data-go]").forEach(function (b) {
       b.addEventListener("click", function () { openReader(parseInt(b.getAttribute("data-go"), 10)); reader.scrollTop = 0; });
     });
@@ -306,6 +308,25 @@
     var t = document.createElement("div"); t.innerHTML = html;
     var im = t.querySelector("img");
     return im ? im.getAttribute("src") : "";
+  }
+  // Wrap runs of 2+ adjacent inline photos into a side-by-side row.
+  function groupPhotoRows(root) {
+    var run = [];
+    function flush() {
+      if (run.length >= 2) {
+        var row = document.createElement("div");
+        row.className = "ph-row";
+        run[0].parentNode.insertBefore(row, run[0]);
+        run.forEach(function (f) { f.classList.remove("full"); row.appendChild(f); });
+      }
+      run = [];
+    }
+    [].slice.call(root.childNodes).forEach(function (n) {
+      if (n.nodeType === 1 && n.classList && n.classList.contains("ph")) run.push(n);
+      else if (n.nodeType === 3 && !n.nodeValue.trim()) { /* whitespace between figures: keep run */ }
+      else flush();
+    });
+    flush();
   }
   function escapeHTML(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function showEmpty(msg) {
